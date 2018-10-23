@@ -1,0 +1,129 @@
+                                 LINUX Geosupport 
+                                    Release 18c
+                                   Version 18.3
+
+
+linux_geo18c_18.3.zip is a binary zip file containing a LINUX Geosupport.  
+
+
+                          Installation Directory Contents
+
+version-18c_18.3
+|
+-----bin
+|    |   c_client               simple interactive test application  
+|
+-----doc
+|
+-----fls
+|    |   AP            \
+|    |   APBBL          \                    
+|    |   APBIN           \            
+|    |   APIDX            \
+|    |   GRID1             \
+|    |   GRID1R             \
+|    |   GRID2               \
+|    |   GRID3                \ 
+|    |   PAD                   \
+|    |   PADBBL                 \               
+|    |   PADBIN                  | - Geosupport data files      
+|    |   PADIDX                 /
+|    |   TPAD                  / 
+|    |   TPADADR              / 
+|    |   TPADBBL             /                   
+|    |   TPADBIN            /            
+|    |   TPADIDX           / 
+|    |   UPAD             / 
+|    |   UPADBBL         /                   
+|    |   UPADBIN        /            
+|    |   UPADIDX       / 
+|    |   STRETCH      / 
+|
+-----include
+|
+|    ----foruser
+|    |   |    geo.h              C include file for geo function prototype
+|    |   |    pac.h              C include file for geo workareas
+|
+-----lib
+|    |   libapequiv.so            dll containing apequiv table 
+|    |   libedequiv.so            dll containing edequiv table 
+|    |   libgeo.so                dll containing Geosupport API 
+|    |   libsan.so                dll containing sanitation tables
+|    |   libsnequiv.so            dll containing sanitation equiv table
+|    |   libsnd.so                dll containing snd 
+|    |   libstdlast.so            dll containing last word table 
+|    |   libstduniv.so            dll containing universal word table
+|    |   libstender.so            dll containing enders table
+|    |   libstexcpt.so            dll containing exception street table
+|    |   libstretch.so            dll containing index to stretch file
+|    |   libthined.so             dll containing thined table
+|
+-----scripts
+
+LINUX Geosupport contains a 'C' application programming interface (API), libgeo.so, 
+and its accompanying support files.  
+Also included is a simple interactive client application:  c_client. 
+
+
+Usage Notes:
+-----------
+1.    Add geo.h to your project to establish access to API in your application.
+2.    Add pac.h for definitions of Work Area 1 and the various Work Area 2's.
+3.    Add lib directory to LD_LIBRARY_PATH 
+4.    Create environmental variable GEOFILES = the location of fls + "/' at end 
+
+
+Steps to Excute c_client: 
+------------------------
+LD_LIBRARY_PATH=$HOME/version-18c_18.3/lib
+export LD_LIBRARY_PATH
+
+GEOFILES=$HOME/version-18c_18.3/fls/
+export GEOFILES 
+
+version-18c_18.3/bin/c_client 
+
+Function HR will tell you the release and version number of the files 
+
+Geosupport User Programming Guide:
+---------------------------------
+http://www1.nyc.gov/assets/planning/download/pdf/data-maps/open-data/upg.pdf
+
+
+Sample Makefile to Create Your Own Application:
+----------------------------------------------
+################################################################################
+# c_client_simple_make:  makefile for geosupport c_client_simple applicatioon 
+################################################################################
+CFLAGS = -g -W -fPIC -D__linux__ -trigraphs
+
+################################################################################
+# replace /devgeo below with the location you have installed Linux Geosupport to 
+################################################################################
+INC = $(HOME)/devgeo/include/foruser
+BIN = $(HOME)/devgeo/bin
+LIBS = $(HOME)/devgeo/lib
+
+##############################################
+# compile objects used in c_client
+##############################################
+
+# c_client.o: c_client.c 
+#	 gcc -c $(CFLAGS) -I$(INC) c_client.c
+
+################################################################################
+
+c_client_all:   
+	gcc $(CFLAGS) -I$(INC) -o $(BIN)/c_client c_client.c \
+	-L$(LIBS) -lgeo -lapequiv -ledequiv -lsan -lsnd -lstExcpt -lStdLast -lStdUniv -lstEnder -lstretch -lthined \
+	-L. -L/usr/local/lib -lm -lc -lgcc_s 
+
+
+
+
+
+
+
+
+
