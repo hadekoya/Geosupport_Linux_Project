@@ -23,6 +23,9 @@
 #define ROLE __stdcall
 #endif
 
+#define DELIMITERS    ";,‘"
+
+
 //contains definition for geo in libgeo.so 
 //#include "geo.h"
 //contains the wa1 and wa2 layouts 
@@ -32,20 +35,7 @@
 
 void call_func_1a();
 void call_func_ap();
-/*void call_func_1e();
-void call_func_1();
-void call_func_2();
-void call_func_2w();
-void call_func_3();
-void call_func_3c();
 
-void call_func_bl();
-void call_func_bn();
-void call_func_d();
-void call_func_dg();
-void call_func_dn();
-void call_func_hr();
-void call_func_1n();*/
 extern void geo(char *ptr_wa1, char *ptr_wa2);
 
 char fakevar;
@@ -147,136 +137,23 @@ char cwa2fhr[5000];
 //---------------------------------------------------------------------------
 //#pragma argsused
 
-int main(int argc, char* argv[])
+/*
+https://stackoverflow.com/questions/12911299/read-csv-file-in-c
+*/
+char* getfield(char* line, int num)
 {
+     char* tok;
+    for (tok = strtok(line, ",");
+            tok && *tok;
+            tok = strtok(NULL, ",\n"))
+    {
+        if (!--num)
+            return tok;
+    }
+    return NULL;
+}
 
-        time(&t);
-        memset(dash_line, '-', sizeof(dash_line));
-		dash_line[120] = '\0';
 
-		//_strset(dash_line, '-'); 
-		exit_sw = 'N';
-        while(exit_sw != 'X')
-        {
-			printf("\n\n%.90s", dash_line);
-			printf("\n*****  Enter a function code or 'X' to exit:  ");
-			fgets(function_sw,3,stdin);
-			
-			if (function_sw[0] == 'X' || function_sw[0] == 'x') 
-			{
-				exit_sw = 'X';
-				continue;
-			}
-			else
-			{
-				printf("You entered %s\n", function_sw); 
-			}
-
-			if (strcmp(function_sw, "AP") == 0 || strcmp(function_sw, "ap") == 0)
-			{
-				call_func_ap();
-			}
-			else if (strcmp(function_sw, "1A") == 0 || strcmp(function_sw, "1a") == 0)
-			{
-				call_func_1a();
-			}
-			/*else if (strcmp(function_sw, "BL") == 0 || strcmp(function_sw, "bl") == 0)
-			{
-				call_func_bl();
-			}
-			else if (strcmp(function_sw, "BN") == 0 || strcmp(function_sw, "bn") == 0)
-			{
-				call_func_bn();
-			}
-			else if (strcmp(function_sw, "1") == 0)
-			{
-				call_func_1();
-			}
-			else if (strcmp(function_sw, "1E") == 0 || strcmp(function_sw, "1e") == 0)
-			{
-				call_func_1e();
-			}
-			else if (strcmp(function_sw, "2") == 0)
-			{
-				call_func_2();
-			}
-			else if (strcmp(function_sw, "2w") == 0)
-			{
-				call_func_2w();
-			}
-			else if (strcmp(function_sw, "3") == 0)
-			{
-				call_func_3();
-			}
-			else if (strcmp(function_sw, "3C") == 0 || strcmp(function_sw, "3c") == 0)
-			{
-				call_func_3c();
-			}
-			else if (strcmp(function_sw, "1N") == 0 || strcmp(function_sw, "1n") == 0)
-			{
-				call_func_1n();
-			}
-			else if (strcmp(function_sw, "D") == 0)
-			{
-				call_func_d();
-			}
-			else if (strcmp(function_sw, "DG") == 0 || strcmp(function_sw, "dg") == 0)
-			{
-				call_func_dg();
-			}
-			else if (strcmp(function_sw, "DN") == 0 || strcmp(function_sw, "dn") == 0)
-			{
-				call_func_dn();
-			}
-			else if (strcmp(function_sw, "HR") == 0 || strcmp(function_sw, "hr") == 0)
-			{
-				call_func_hr();
-			}*/
-			else
-			{
-				printf("\nPlease use:  1, 1E, 2, 3, 3C, AP, 1A, BL, BN, 1N, D, DG, DN, HR or X\n");
-				continue;
-			}
-
-			printf("\n\n");
-			/*for (i = 0; i < 200; i++)
-			for (i = 0; i < *p_array_start; i++)
-			{
-				printf("[%3d]: %.80s\n", i, my_array[i]);
-			}*/
-
-		}  // end of while(exit_sw = 'N') loop
-
-        return 0;
-
-}  // end of main
-
-//---------------------------------------------------------------------------
-/*void call_func_hr ()
-{
-	char *pmode_switch;
-
-	memset(uwa1.cwa1, ' ', 1200);
-	memcpy(uwa1.wa1.input.func_code, "HR", 2);
-	uwa1.wa1.input.platform_ind = 'C';
-
-	geo(uwa1.cwa1, cwa2fhr);
-
-	printf("\n\nFunction 1A GRC = %.2s\n"
-		   "Error Message = %.80s\n", uwa1.wa1.output.ret_code, uwa1.wa1.output.msg);
-
-	if ((memcmp(uwa1.wa1.output.ret_code, "00", 2) == 0)  || 
-		(memcmp(uwa1.wa1.output.ret_code, "01", 2) == 0))
-	{
-		// displays the first 80 bytes of wa2 
-		printf("cwa2fhr = %.80s\n", cwa2fhr);
-	}
-	else
-	{
-		printf("\n\nwa1_input = %.80s\n", uwa1.cwa1);
-	}
-
-}  // end of call_func_hr () */
 
 //---------------------------------------------------------------------------
 void clearInput()
@@ -286,6 +163,7 @@ void clearInput()
 	ungetc(ch, stdin);
 	
 }
+
 
 void display1A(C_WA2_F1A uwa2_f1a){
 	/*fflush(stdout);
@@ -369,85 +247,6 @@ printf("nbr_addr[4] %.4s", uwa2f1a.wa2_f1a.nbr_addr);printf("\t");
 
 
 }
-void call_func_ap ()
-{
-	char *pmode_switch;
-
-	memset(uwa1.cwa1, ' ', 1200);
-	memcpy(uwa1.wa1.input.func_code, "AP", 2);
-	uwa1.wa1.input.platform_ind = 'C';
-	input_str[0]='\0';
-	printf("\n\n*****  Enter a boro code:  ");
-	//gets(input_str);
-	clearInput();
-	
-	fgets(input_str,3,stdin);
-	uwa1.wa1.input.sti[0].boro = input_str[0]; 
-
-	printf("\n\n*****  Enter a housenumber:  ");
-	//gets(input_str);
-	fgets(input_str,80,stdin);
-		memcpy(uwa1.wa1.input.hse_nbr_disp, input_str, strlen(input_str)); 
-
-	printf("\n\n*****  Enter a street name:  ");
-	//gets(input_str);
-	fgets(input_str,80,stdin);
-
-	memcpy(uwa1.wa1.input.sti[0].Street_name, input_str, strlen(input_str)); 
-
-	printf("\n\n*****  Do you want TPAD data:  ");
-
-	//gets(input_str);
-	fgets(input_str,80,stdin);
-
-	if (input_str[0]== 'Y' || input_str[0] == 'y') 
-	{
-		uwa1.wa1.input.tpad_switch = input_str[0]; 
-	}
-
-	printf("\n\n*****  Enter 'X' for Extended Work Area:  ");
-	//gets(input_str);
-	fgets(input_str,80,stdin);
-
-	if (input_str[0]== 'X' || input_str[0] == 'x') 
-	{
-		uwa1.wa1.input.mode_switch = input_str[0]; 
-	}
-
-	if (input_str[0]== 'X' || input_str[0] == 'x') 
-	{
-		
-		geo(uwa1.cwa1, uwa2fapx.cwa2fapx);
-	}
-	else
-	{
-		geo(uwa1.cwa1, uwa2fap.cwa2fap);
-	}
-
-	printf("\n\nFunction AP GRC = %.2s\n"
-		   "Error Message = %.80s\n", uwa1.wa1.output.ret_code, uwa1.wa1.output.msg);
-
-	if ((memcmp(uwa1.wa1.output.ret_code, "00", 2) == 0)  || 
-		(memcmp(uwa1.wa1.output.ret_code, "01", 2) == 0))
-	{
-		if (input_str[0]== 'X' || input_str[0] == 'x') 
-		{		
-			// displays the first 80 bytes of wa2 
-			printf("uwa2fapx.cwa2fapx = %.80s\n", uwa2fapx.cwa2fapx);
-			
-		}
-		else
-		{
-			// displays the first 80 bytes of wa2 
-			printf("uwa2fap.cwa2fap = %.80s\n", uwa2fap.cwa2fap);
-		}
-	}
-	else
-	{
-		printf("\n\nwa1_input = %.80s\n", uwa1.cwa1);
-	}
-
-}  // end of call_func_ap () 
 
 //---------------------------------------------------------------------------
 void call_func_1a ()
@@ -530,48 +329,71 @@ void call_func_1a ()
 	{
 		printf("\n\nwa1_input = %.80s\n", uwa1.cwa1);
 	}
-
 }  // end of call_func_1a () 
-/*
+
+
 //---------------------------------------------------------------------------
-void call_func_bl ()
+void func_1a_call_param (char* hsnbr, char* sname, char* bcode, char* tpad_switch, char* extended_work_area)
 {
 	char *pmode_switch;
 
+
+
+			printf("in param Field 2 is House Number %s\t", hsnbr);
+			printf("Field 3 is Street Name %s\t", sname);
+			printf("Field 4 is Borough Code %s\n", bcode);
+			printf("bjb %ld", strlen(bcode));
+
 	memset(uwa1.cwa1, ' ', 1200);
-	memcpy(uwa1.wa1.input.func_code, "BL", 2);
+	memcpy(uwa1.wa1.input.func_code, "1A", 2);
 	uwa1.wa1.input.platform_ind = 'C';
 
-	printf("\n\n*****  Enter a boro code:  ");
-	gets(input_str);
-	uwa1.wa1.input.bbli.cas.boro = input_str[0]; 
+	//printf("\n\n*****  Enter a boro code:  ");
+	//clearInput();
+	//gets(input_str);
+	//fgets(input_str,80,stdin);
+	uwa1.wa1.input.sti[0].boro = bcode[1]; 
+	printf("\n value of boro code : %c", uwa1.wa1.input.sti[0].boro); 
+	//printf("\n\n*****  Enter a housenumber:  ");
+	//gets(input_str);
+	//clearInput();
+	//fgets(input_str,80,stdin);
+	//memcpy(uwa1.wa1.input.hse_nbr_disp, "22", 2); 
+	memcpy(uwa1.wa1.input.hse_nbr_disp, hsnbr, strlen(hsnbr)); 
+		printf("\n value of shsnbr %s", hsnbr); 
 
-	printf("\n\n*****  Enter a tax block number:  ");
-	gets(input_str);
-	memcpy(uwa1.wa1.input.bbli.cas.block, input_str, strlen(input_str)); 
+	printf("\n value of hse nbr: %s", uwa1.wa1.input.hse_nbr_disp); 
 
-	printf("\n\n*****  Enter a tax lot number:  ");
-	gets(input_str);
-	memcpy(uwa1.wa1.input.bbli.cas.lot, input_str, strlen(input_str)); 
+	//printf("\n\n*****  Enter a street name:  ");
+	//gets(input_str);
+	//clearInput();
+	//fgets(input_str,80,stdin);
+	memcpy(uwa1.wa1.input.sti[0].Street_name, sname, strlen(sname)); 
+	printf("\n value of street name: %s", sname); 
 
-	printf("\n\n*****  Do you want TPAD data:  ");
-	gets(input_str);
-	if (input_str[0]== 'Y' || input_str[0] == 'y') 
+	printf("\n value of street name: %s", uwa1.wa1.input.sti[0].Street_name); 
+
+	//printf("\n\n*****  Do you want TPAD data:  ");
+	//gets(input_str);
+	//clearInput();
+	//fgets(input_str,80,stdin);
+	if (tpad_switch[0] == 'Y' || tpad_switch[0] == 'y') 
 	{
 		uwa1.wa1.input.tpad_switch = input_str[0]; 
 	}
 
-	printf("\n\n*****  Enter 'X' for Extended Work Area:  ");
-	gets(input_str);
-	if (input_str[0]== 'X' || input_str[0] == 'x') 
-	//pmode_switch = _strupr(gets(input_str));
-	//if (pmode_switch[0] == 'X') 
+//	printf("\n\n*****  Enter 'X' for Extended Work Area:  ");
+	//gets(input_str);
+	//clearInput();
+	//fgets(input_str,80,stdin);
+	
+	
+	if (extended_work_area[0]== 'X' || extended_work_area[0]== 'x') 
 	{
-		uwa1.wa1.input.mode_switch = input_str[0]; 
+		uwa1.wa1.input.mode_switch = extended_work_area[0]; 
 	}
 
-	if (input_str[0]== 'X' || input_str[0] == 'x') 
-	//if (*pmode_switch == 'X')
+	if (extended_work_area[0]== 'X' || extended_work_area[0] == 'x') 
 	{
 		geo(uwa1.cwa1, uwa2f1ax.cwa2f1ax);
 	}
@@ -580,623 +402,128 @@ void call_func_bl ()
 		geo(uwa1.cwa1, uwa2f1a.cwa2f1a);
 	}
 
-	printf("\n\nFunction BL GRC = %.2s\n"
+	printf("\n\nFunction 1A GRC = %.2s\n"
 		   "Error Message = %.80s\n", uwa1.wa1.output.ret_code, uwa1.wa1.output.msg);
 
 	if ((memcmp(uwa1.wa1.output.ret_code, "00", 2) == 0)  || 
 		(memcmp(uwa1.wa1.output.ret_code, "01", 2) == 0))
 	{
-			if (input_str[0]== 'X' || input_str[0] == 'x') 
-				// displays the first 80 bytes of wa2 
-				printf("uwa2f1ax.cwa2f1ax = %.80s\n", uwa2f1ax.cwa2f1ax);
-			else
-				// displays the first 80 bytes of wa2 
-				printf("uwa2f1a.cwa2f1a = %.80s\n", uwa2f1a.cwa2f1a);
-	}
-	else
-	{
-		printf("\n\nwa1_input = %.80s\n", uwa1.cwa1);
-	}
-
-}  // end of call_func_bl () 
-
-//---------------------------------------------------------------------------
-void call_func_bn ()
-{
-	char *pmode_switch;
-
-	memset(uwa1.cwa1, ' ', 1200);
-	memcpy(uwa1.wa1.input.func_code, "BN", 2);
-	uwa1.wa1.input.platform_ind = 'C';
-
-	printf("\n\n*****  Enter a BIN:  ");
-	gets(input_str);
-	memcpy(uwa1.wa1.input.bld_id, input_str, strlen(input_str)); 
-
-	printf("\n\n*****  Do you want TPAD data:  ");
-	gets(input_str);
-	if (input_str[0]== 'Y' || input_str[0] == 'y') 
-	{
-		uwa1.wa1.input.tpad_switch = input_str[0]; 
-	}
-
-	printf("\n\n*****  Enter 'X' for Extended Work Area:  ");
-	gets(input_str);
-	if (input_str[0]== 'X' || input_str[0] == 'x') 
-	//pmode_switch = _strupr(gets(input_str));
-	//if (pmode_switch[0] == 'X') 
-	{
-		uwa1.wa1.input.mode_switch = input_str[0]; 
-	}
-
-	if (input_str[0]== 'X' || input_str[0] == 'x') 
-	//if (*pmode_switch == 'X')
-	{
-		geo(uwa1.cwa1, uwa2f1ax.cwa2f1ax);
-	}
-	else
-	{
-		geo(uwa1.cwa1, uwa2f1a.cwa2f1a);
-	}
-
-	printf("\n\nFunction BN GRC = %.2s\n"
-		   "Error Message = %.80s\n", uwa1.wa1.output.ret_code, uwa1.wa1.output.msg);
-
-	if ((memcmp(uwa1.wa1.output.ret_code, "00", 2) == 0)  || 
-		(memcmp(uwa1.wa1.output.ret_code, "01", 2) == 0))
-	{
-			if (input_str[0]== 'X' || input_str[0] == 'x') 
-				// displays the first 80 bytes of wa2 
-				printf("uwa2f1ax.cwa2f1ax = %.80s\n", uwa2f1ax.cwa2f1ax);
-			else
-				// displays the first 80 bytes of wa2 
-				printf("uwa2f1a.cwa2f1a = %.80s\n", uwa2f1a.cwa2f1a);
-	}
-	else
-	{
-		printf("\n\nwa1_input = %.80s\n", uwa1.cwa1);
-	}
-
-}  // end of call_func_bn () 
-
-//---------------------------------------------------------------------------
-void call_func_1 ()
-{
-	char *pmode_switch;
-
-	memset(uwa1.cwa1, ' ', 1200);
-	memcpy(uwa1.wa1.input.func_code, "1 ", 2);
-	uwa1.wa1.input.platform_ind = 'C';
-
-	printf("\n\n*****  Enter a boro code:  ");
-	gets(input_str);
-	uwa1.wa1.input.sti[0].boro = input_str[0]; 
-
-	printf("\n\n*****  Enter a housenumber:  ");
-	gets(input_str);
-	memcpy(uwa1.wa1.input.hse_nbr_disp, input_str, strlen(input_str)); 
-
-	printf("\n\n*****  Enter a street name:  ");
-	gets(input_str);
-	memcpy(uwa1.wa1.input.sti[0].Street_name, input_str, strlen(input_str)); 
-
-	printf("\n\n*****  Enter 'X' for Extended Work Area:  ");
-	gets(input_str);
-	if (input_str[0]== 'X' || input_str[0] == 'x') 
-	//pmode_switch = _strupr(gets(input_str));
-	//if (pmode_switch[0] == 'X') 
-	{
-		uwa1.wa1.input.mode_switch = input_str[0]; 
-	}
-
-	if (input_str[0]== 'X' || input_str[0] == 'x') 
-	//if (*pmode_switch == 'X')
-	{
-		geo(uwa1.cwa1, uwa2f1ex.cwa2f1ex);
-	}
-	else
-	{
-		geo(uwa1.cwa1, uwa2f1.cwa2f1);
-	}
-
-	printf("\n\nFunction 1 GRC = %.2s\n"
-		   "Error Message = %.80s\n", uwa1.wa1.output.ret_code, uwa1.wa1.output.msg);
-
-	if ((memcmp(uwa1.wa1.output.ret_code, "00", 2) == 0)  || 
-		(memcmp(uwa1.wa1.output.ret_code, "01", 2) == 0))
-	{
-			if (input_str[0]== 'X' || input_str[0] == 'x') 
-				// displays the first 80 bytes of wa2 
-				printf("uwa2f1ex.cwa2f1ex = %.80s\n", uwa2f1ex.cwa2f1ex);
-			else
-				// displays the first 80 bytes of wa2 
-				printf("uwa2f1.cwa2f1 = %.80s\n", uwa2f1.cwa2f1);
-	}
-	else
-	{
-		printf("\n\nwa1_input = %.80s\n", uwa1.cwa1);
-	}
-}  // end of call_func_1 () 
-
-//---------------------------------------------------------------------------
-void call_func_1e ()
-{
-	char *pmode_switch;
-
-	memset(uwa1.cwa1, ' ', 1200);
-	memcpy(uwa1.wa1.input.func_code, "1E", 2);
-	uwa1.wa1.input.platform_ind = 'C';
-
-	printf("\n\n*****  Enter a boro code:  ");
-	gets(input_str);
-	uwa1.wa1.input.sti[0].boro = input_str[0]; 
-
-	printf("\n\n*****  Enter a housenumber:  ");
-	gets(input_str);
-	memcpy(uwa1.wa1.input.hse_nbr_disp, input_str, strlen(input_str)); 
-
-	printf("\n\n*****  Enter a street name:  ");
-	gets(input_str);
-	memcpy(uwa1.wa1.input.sti[0].Street_name, input_str, strlen(input_str)); 
-
-	printf("\n\n*****  Enter 'X' for Extended Work Area:  ");
-	gets(input_str);
-	if (input_str[0]== 'X' || input_str[0] == 'x') 
-	//pmode_switch = _strupr(gets(input_str));
-	//if (pmode_switch[0] == 'X') 
-	{
-		uwa1.wa1.input.mode_switch = input_str[0]; 
-	}
-
-	if (input_str[0]== 'X' || input_str[0] == 'x') 
-	//if (*pmode_switch == 'X')
-	{
-		geo(uwa1.cwa1, uwa2f1ex.cwa2f1ex);
-	}
-	else
-	{
-		geo(uwa1.cwa1, uwa2f1.cwa2f1);
-	}
-
-	printf("\n\nFunction 1E GRC = %.2s\n"
-		   "Error Message = %.80s\n", uwa1.wa1.output.ret_code, uwa1.wa1.output.msg);
-
-	if ((memcmp(uwa1.wa1.output.ret_code, "00", 2) == 0)  || 
-		(memcmp(uwa1.wa1.output.ret_code, "01", 2) == 0))
-	{
-			if (input_str[0]== 'X' || input_str[0] == 'x') 
-				// displays the first 80 bytes of wa2 
-				printf("uwa2f1ex.cwa2f1ex = %.80s\n", uwa2f1ex.cwa2f1ex);
-			else
-				// displays the first 80 bytes of wa2 
-				printf("uwa2f1.cwa2f1 = %.80s\n", uwa2f1.cwa2f1);
-	}
-	else
-	{
-		printf("\n\nwa1_input = %.80s\n", uwa1.cwa1);
-	}
-}  // end of call_func_1e () 
-
-//---------------------------------------------------------------------------
-void call_func_2 ()
-{
-	//char *pmode_switch;
-
-	memset(uwa1.cwa1, ' ', 1200);
-	memcpy(uwa1.wa1.input.func_code, "2 ", 2);
-	uwa1.wa1.input.platform_ind = 'C';
-
-	printf("\n\n*****  Enter 'y' for Node Input:  ");
-	gets(input_str);
-	if (input_str[0]== 'y' || input_str[0] == 'y') 
-	{
-		printf("\n\n*****  Enter a Node ID:  ");
-		gets(input_str);
-		memcpy(uwa1.wa1.input.node, input_str, strlen(input_str)); 
-	}
-	else 
-	{
-		printf("\n\n*****  Enter a boro code:  ");
-		gets(input_str);
-		uwa1.wa1.input.sti[0].boro = input_str[0]; 
-
-		printf("\n\n*****  Enter the first cross-street:  ");
-		gets(input_str);
-		memcpy(uwa1.wa1.input.sti[0].Street_name, input_str, strlen(input_str)); 
-
-		printf("\n\n*****  Enter the second cross-street:  ");
-		gets(input_str);
-		memcpy(uwa1.wa1.input.sti[1].Street_name, input_str, strlen(input_str)); 
-
-		printf("\n\n*****  Enter a compass direction (if needed):  ");
-		gets(input_str);
-		uwa1.wa1.input.comp_direction = input_str[0];
-	}
-
-	geo(uwa1.cwa1, uwa2f2.cwa2f2);
-
-	printf("\n\nFunction 2 GRC = %.2s\n"
-		   "Error Message = %.80s\n", uwa1.wa1.output.ret_code, uwa1.wa1.output.msg);
-
-	if ((memcmp(uwa1.wa1.output.ret_code, "00", 2) == 0)  || 
-		(memcmp(uwa1.wa1.output.ret_code, "01", 2) == 0))
-	{
-		// displays the first 80 bytes of wa2 
-		printf("uwa2f2.cwa2f2 = %.80s\n", uwa2f2.cwa2f2);
-	}
-	else
-	{
-		printf("\n\nwa1_input = %.80s\n", uwa1.cwa1);
-	}
-
-}  // end of call_func_2 () 
-
-//---------------------------------------------------------------------------
-void call_func_2w ()
-{
-	//char *pmode_switch;
-
-	memset(uwa1.cwa1, ' ', 1200);
-	memcpy(uwa1.wa1.input.func_code, "2W", 2);
-	uwa1.wa1.input.platform_ind = 'C';
-
-	printf("\n\n*****  Enter 'y' for Node Input:  ");
-	gets(input_str);
-	if (input_str[0]== 'y' || input_str[0] == 'y') 
-	{
-		printf("\n\n*****  Enter a Node ID:  ");
-		gets(input_str);
-		memcpy(uwa1.wa1.input.node, input_str, strlen(input_str)); 
-	}
-	else 
-	{
-		printf("\n\n*****  Enter a boro code:  ");
-		gets(input_str);
-		uwa1.wa1.input.sti[0].boro = input_str[0]; 
-
-		printf("\n\n*****  Enter the first cross-street:  ");
-		gets(input_str);
-		memcpy(uwa1.wa1.input.sti[0].Street_name, input_str, strlen(input_str)); 
-
-		printf("\n\n*****  Enter the second cross-street:  ");
-		gets(input_str);
-		memcpy(uwa1.wa1.input.sti[1].Street_name, input_str, strlen(input_str)); 
-
-		printf("\n\n*****  Enter a compass direction (if needed):  ");
-		gets(input_str);
-		uwa1.wa1.input.comp_direction = input_str[0];
-	}
-
-	geo(uwa1.cwa1, uwa2f2w.cwa2f2w);
-
-	printf("\n\nFunction 2 GRC = %.2s\n"
-		   "Error Message = %.80s\n", uwa1.wa1.output.ret_code, uwa1.wa1.output.msg);
-
-	if ((memcmp(uwa1.wa1.output.ret_code, "00", 2) == 0)  || 
-		(memcmp(uwa1.wa1.output.ret_code, "01", 2) == 0))
-	{
-		// displays the first 80 bytes of wa2 
-		printf("uwa2f2w.cwa2f2w = %.80s\n", uwa2f2w.cwa2f2w);
-	}
-	else
-	{
-		printf("\n\nwa1_input = %.80s\n", uwa1.cwa1);
-		if (memcmp(uwa1.wa1.output.ret_code, "03", 2) == 0) 
+		if (input_str[0]== 'X' || input_str[0] == 'x') 
 		{
 			// displays the first 80 bytes of wa2 
-			printf("uwa2f2w.cwa2f2w = %.80s\n", uwa2f2w.cwa2f2w);
+			printf("uwa2f1ax.cwa2f1ax = %.80s\n", uwa2f1ax.cwa2f1ax);
+		}
+		else 
+		{
+			// displays the first 80 bytes of wa2 
+			printf("uwa2f1a.cwa2f1a = %.80s\n", uwa2f1a.cwa2f1a);
+			//printf("Latitude %.9s", uwa2f1a.wa2_f1a.latitude);
+			display1A(uwa2f1a.wa2_f1a);
+	
 		}
 	}
-
-}  // end of call_func_2w () 
-
-//---------------------------------------------------------------------------
-void call_func_3 ()
-{
-	char *pmode_switch;
-
-	memset(uwa1.cwa1, ' ', 1200);
-	memcpy(uwa1.wa1.input.func_code, "3 ", 2);
-	uwa1.wa1.input.platform_ind = 'C';
-
-	printf("\n\n*****  Enter a boro code:  ");
-	gets(input_str);
-	uwa1.wa1.input.sti[0].boro = input_str[0]; 
-
-	printf("\n\n*****  Enter the on-street:  ");
-	gets(input_str);
-	memcpy(uwa1.wa1.input.sti[0].Street_name, input_str, strlen(input_str)); 
-
-	printf("\n\n*****  Enter the first cross-street:  ");
-	gets(input_str);
-	memcpy(uwa1.wa1.input.sti[1].Street_name, input_str, strlen(input_str)); 
-
-	printf("\n\n*****  Enter the second cross-street:  ");
-	gets(input_str);
-	memcpy(uwa1.wa1.input.sti[2].Street_name, input_str, strlen(input_str)); 
-
-	printf("\n\n*****  Enter 'X' for Extended Work Area:  ");
-	gets(input_str);
-	if (input_str[0]== 'X' || input_str[0] == 'x') 
-	//pmode_switch = _strupr(gets(input_str));
-	//if (pmode_switch[0] == 'X') 
-	{
-		uwa1.wa1.input.mode_switch = input_str[0]; 
-	}
-
-	if (input_str[0]== 'X' || input_str[0] == 'x') 
-	//if (*pmode_switch == 'X')
-	{
-		geo(uwa1.cwa1, uwa2f3x.cwa2f3x);
-	}
-	else
-	{
-		geo(uwa1.cwa1, uwa2f3.cwa2f3);
-	}
-
-	printf("\n\nFunction 3 GRC = %.2s\n"
-		   "Error Message = %.80s\n", uwa1.wa1.output.ret_code, uwa1.wa1.output.msg);
-
-	if ((memcmp(uwa1.wa1.output.ret_code, "00", 2) == 0)  || 
-		(memcmp(uwa1.wa1.output.ret_code, "01", 2) == 0))
-	{
-			if (input_str[0]== 'X' || input_str[0] == 'x') 
-				// displays the first 80 bytes of wa2 
-				printf("uwa2f3x.cwa2f3x = %.80s\n", uwa2f3x.cwa2f3x);
-			else
-				// displays the first 80 bytes of wa2 
-				printf("uwa2f3.cwa2f3 = %.80s\n", uwa2f3.cwa2f3);
-	}
 	else
 	{
 		printf("\n\nwa1_input = %.80s\n", uwa1.cwa1);
 	}
+}  // end of call_func_1a () 
 
-}  // end of call_func_3 () 
 
-void call_func_3c ()
+int main(int argc, char* argv[])
 {
-	char *pmode_switch;
 
-	memset(uwa1.cwa1, ' ', 1200);
-	memcpy(uwa1.wa1.input.func_code, "3C", 2);
-	uwa1.wa1.input.platform_ind = 'C';
+	    FILE* stream = fopen("input.txt", "r");
 
-	printf("\n\n*****  Enter a boro code:  ");
-	gets(input_str);
-	uwa1.wa1.input.sti[0].boro = input_str[0]; 
+		char line[1024];
+		char hsnbr_arr[10];
+		char sname_arr[10];
+		char bcode_arr[10];
 
-	printf("\n\n*****  Enter the on-street:  ");
-	gets(input_str);
-	memcpy(uwa1.wa1.input.sti[0].Street_name, input_str, strlen(input_str)); 
+		while (fgets(line, 1024, stream))
+		{
 
-	printf("\n\n*****  Enter the first cross-street:  ");
-	gets(input_str);
-	memcpy(uwa1.wa1.input.sti[1].Street_name, input_str, strlen(input_str)); 
+			char* token = strtok(line, DELIMITERS);
+			int cnt = 0;
+			while(token != NULL)
+			{    // While there are tokens in "string"
+				// ...
+				// doing some thing with token
+				// ...
+				// Get next token
+				if(cnt==1)
+					strcpy(hsnbr_arr, token);
+				if(cnt==2)
+					strcpy(sname_arr, token);
+				if(cnt==3){
+					//strcpy(bcode_arr, token);
+					//bcode_arr[strlen(token)]=
+					strncpy(bcode_arr, token, sizeof token - 1);
+					bcode_arr[sizeof token - 1]='\0';
+				}
+				token = strtok(NULL, DELIMITERS);
+				cnt++;
+			}
 
-	printf("\n\n*****  Enter the second cross-street:  ");
-	gets(input_str);
-	memcpy(uwa1.wa1.input.sti[2].Street_name, input_str, strlen(input_str)); 
+			puts(hsnbr_arr);
+/*
+			char* hsnbr = strdup(line);
+			char* sname = strdup(line);
+			char* bcode = strdup(line);
 
-	printf("\n\n*****  Enter a compass direction:  ");
-	gets(input_str);
-	uwa1.wa1.input.comp_direction = input_str[0]; 
+			printf("Field 2 is House Number %s\t", getfield(hsnbr, 2));
+			char chsnbr=malloc(strlen(hsnbr) + 1);
+			memcpy(chsnbr, hsnbr, strlen(hsnbr));
+			printf("Field 3 is Street Name %s\t", getfield(sname, 3));
+			printf("Field 4 is Borough Code %s\n", getfield(bcode, 4));
+			// NOTE strtok clobbers tmp
+			//const char* chsnbr = getfield(hsnbr, 2);*/
 
-	printf("\n\n*****  Enter 'X' for Extended Work Area:  ");
-	gets(input_str);
-	if (input_str[0]== 'X' || input_str[0] == 'x') 
-	//pmode_switch = _strupr(gets(input_str));
-	//if (pmode_switch[0] == 'X') 
-	{
-		uwa1.wa1.input.mode_switch = input_str[0]; 
-	}
+					
+	
 
-	if (input_str[0]== 'X' || input_str[0] == 'x') 
-	//if (*pmode_switch == 'X')
-	{
-		geo(uwa1.cwa1, uwa2f3cx.cwa2f3cx);
-	}
-	else
-	{
-		geo(uwa1.cwa1, uwa2f3c.cwa2f3c);
-	}
+			func_1a_call_param(hsnbr_arr, sname_arr, bcode_arr, "n", "n");
 
-	printf("\n\nFunction 3C GRC = %.2s\n"
-		   "Error Message = %.80s\n", uwa1.wa1.output.ret_code, uwa1.wa1.output.msg);
+		/*	free(hsnbr);
+			free(sname);
+			free(bcode);*/
+		}
+/*
+        time(&t);
+        memset(dash_line, '-', sizeof(dash_line));
+		dash_line[120] = '\0';
 
-	if ((memcmp(uwa1.wa1.output.ret_code, "00", 2) == 0)  || 
-		(memcmp(uwa1.wa1.output.ret_code, "01", 2) == 0))
-	{
-			if (input_str[0]== 'X' || input_str[0] == 'x') 
-				// displays the first 80 bytes of wa2 
-				printf("uwa2f3cx.cwa2f3cx = %.80s\n", uwa2f3cx.cwa2f3cx);
+		//_strset(dash_line, '-'); 
+		exit_sw = 'N';
+        while(exit_sw != 'X')
+        {
+			printf("\n\n%.90s", dash_line);
+			printf("\n*****  Enter a function code or 'X' to exit:  ");
+			fgets(function_sw,3,stdin);
+			
+			if (function_sw[0] == 'X' || function_sw[0] == 'x') 
+			{
+				exit_sw = 'X';
+				continue;
+			}
 			else
-				// displays the first 80 bytes of wa2 
-				printf("uwa2f3c.cwa2f3c = %.80s\n", uwa2f3c.cwa2f3c);
-	}
-	else
-	{
-		printf("\n\nwa1_input = %.80s\n", uwa1.cwa1);
-	}
+			{
+				printf("You entered %s\n", function_sw); 
+			}
+			
+			if (strcmp(function_sw, "1A") == 0 || strcmp(function_sw, "1a") == 0)
+			{
+				call_func_1a();
+			}
+			else
+			{
+				printf("\nPlease use:  1, 1E, 2, 3, 3C, AP, 1A, BL, BN, 1N, D, DG, DN, HR or X\n");
+				continue;
+			}
 
-}  // end of call_func_3c () 
+			printf("\n\n");
 
-//---------------------------------------------------------------------------
-void call_func_1n ()
-{
-	//char *pmode_switch;
-
-	memset(uwa1.cwa1, ' ', 1200);
-	memcpy(uwa1.wa1.input.func_code, "1N", 2);
-	uwa1.wa1.input.platform_ind = 'C';
-
-	printf("\n\n*****  Enter a boro code:  ");
-	gets(input_str);
-	uwa1.wa1.input.sti[0].boro = input_str[0]; 
-
-	printf("\n\n*****  Enter a street name:  ");
-	gets(input_str);
-	memcpy(uwa1.wa1.input.sti[0].Street_name, input_str, strlen(input_str)); 
-
-	printf("\n\n*****  Enter 'C' for Compact Format:  ");
-	gets(input_str);
-	uwa1.wa1.input.st_name_norm = input_str[0]; 
-
-	printf("\n\n*****  Enter 'P' or 'F' for Browse Flag Type:  ");
-	gets(input_str);
-	uwa1.wa1.input.browse_flag = input_str[0]; 
-
-	geo(uwa1.cwa1, NULL);
-
-	printf("\n\nFunction 1N GRC = %.2s\n"
-		   "Error Message = %.80s\n", uwa1.wa1.output.ret_code, uwa1.wa1.output.msg);
-
-	if ((memcmp(uwa1.wa1.output.ret_code, "00", 2) == 0)  || 
-		(memcmp(uwa1.wa1.output.ret_code, "01", 2) == 0))
-	{
-		// displays the first 80 bytes of wa1
-		printf("uwa1.cwa1 = %.80s\n", uwa1.cwa1);
-	}
-	else
-	{
-		// displays the first 80 bytes of wa1
-		printf("uwa1.cwa1 = %.80s\n", uwa1.cwa1);
-	}
-}  // end of call_func_1n () 
-
-//---------------------------------------------------------------------------
-void call_func_d ()
-{
-	//char *pmode_switch;
-
-	memset(uwa1.cwa1, ' ', 1200);
-	memcpy(uwa1.wa1.input.func_code, "D ", 2);
-	uwa1.wa1.input.platform_ind = 'C';
-
-	printf("\n\n*****  Enter a boro code:  ");
-	gets(input_str);
-	uwa1.wa1.input.sti[0].boro = input_str[0]; 
-
-	printf("\n\n*****  Enter a 5-byte street code:  ");
-	gets(input_str);
-	memcpy(uwa1.wa1.input.sti[0].SC10, input_str, strlen(input_str)); 
-
-	printf("\n\n*****  Enter 'C' for Compact Format:  ");
-	gets(input_str);
-	uwa1.wa1.input.st_name_norm = input_str[0]; 
-
-	geo(uwa1.cwa1, NULL);
-
-	printf("\n\nFunction 1N GRC = %.2s\n"
-		   "Error Message = %.80s\n", uwa1.wa1.output.ret_code, uwa1.wa1.output.msg);
-
-	if ((memcmp(uwa1.wa1.output.ret_code, "00", 2) == 0)  || 
-		(memcmp(uwa1.wa1.output.ret_code, "01", 2) == 0))
-	{
-		// displays the first 80 bytes of wa1 
-		printf("uwa1.cwa1 = %.80s\n",uwa1.cwa1 );
-	}
-	else
-	{
-		// displays the first 80 bytes of wa1
-		printf("uwa1.cwa1 = %.80s\n",uwa1.cwa1 );
-	}
-
-}  // end of function_d () 
-
-//---------------------------------------------------------------------------
-void call_func_dg ()
-{
-	//char *pmode_switch;
-
-	memset(uwa1.cwa1, ' ', 1200);
-	memcpy(uwa1.wa1.input.func_code, "DG", 2);
-	uwa1.wa1.input.platform_ind = 'C';
-
-	printf("\n\n*****  Enter a boro code:  ");
-	gets(input_str);
-	uwa1.wa1.input.sti[0].boro = input_str[0]; 
-
-	printf("\n\n*****  Enter a 5-byte street code:  ");
-	gets(input_str);
-	memcpy(uwa1.wa1.input.sti[0].SC10, input_str, strlen(input_str)); 
-
-	printf("\n\n*****  Enter a 2-byte LGC:  ");
-	gets(input_str);
-	memcpy(uwa1.wa1.input.sti[0].SC10+5, input_str, strlen(input_str)); 
-
-	printf("\n\n*****  Enter 'C' for Compact Format:  ");
-	gets(input_str);
-	uwa1.wa1.input.st_name_norm = input_str[0]; 
-
-	geo(uwa1.cwa1, NULL);
-
-	printf("\n\nFunction 1N GRC = %.2s\n"
-		   "Error Message = %.80s\n", uwa1.wa1.output.ret_code, uwa1.wa1.output.msg);
-
-	if ((memcmp(uwa1.wa1.output.ret_code, "00", 2) == 0)  || 
-		(memcmp(uwa1.wa1.output.ret_code, "01", 2) == 0))
-	{
-		// displays the first 80 bytes of wa2 
-		printf("uwa1.cwa1 = %.80s\n", uwa1.cwa1);
-	}
-	else
-	{
-		// displays the first 80 bytes of wa2 
-		printf("uwa1.cwa1 = %.80s\n", uwa1.cwa1);
-	}
-
-}  // end of call_func_dg () 
-
-//---------------------------------------------------------------------------
-void call_func_dn ()
-{
-	//char *pmode_switch;
-
-	memset(uwa1.cwa1, ' ', 1200);
-	memcpy(uwa1.wa1.input.func_code, "DN", 2);
-	uwa1.wa1.input.platform_ind = 'C';
-
-	printf("\n\n*****  Enter a boro code:  ");
-	gets(input_str);
-	uwa1.wa1.input.sti[0].boro = input_str[0]; 
-
-	printf("\n\n*****  Enter a 5-byte street code:  ");
-	gets(input_str);
-	memcpy(uwa1.wa1.input.sti[0].SC10, input_str, strlen(input_str)); 
-
-	printf("\n\n*****  Enter a 2-byte LGC:  ");
-	gets(input_str);
-	memcpy(uwa1.wa1.input.sti[0].SC10+5, input_str, strlen(input_str)); 
-
-	printf("\n\n*****  Enter a 3-byte SPV:  ");
-	gets(input_str);
-	memcpy(uwa1.wa1.input.sti[0].SC10+7, input_str, strlen(input_str)); 
-
-	printf("\n\n*****  Enter 'C' for Compact Format:  ");
-	gets(input_str);
-	uwa1.wa1.input.st_name_norm = input_str[0]; 
-
-	geo(uwa1.cwa1, NULL);
-
-	printf("\n\nFunction 1N GRC = %.2s\n"
-		   "Error Message = %.80s\n", uwa1.wa1.output.ret_code, uwa1.wa1.output.msg);
-
-	if ((memcmp(uwa1.wa1.output.ret_code, "00", 2) == 0)  || 
-		(memcmp(uwa1.wa1.output.ret_code, "01", 2) == 0))
-	{
-		// displays the first 80 bytes of wa2 
-		printf("uwa1.cwa1 = %.80s\n", uwa1.cwa1);
-	}
-	else
-	{
-		// displays the first 80 bytes of wa2 
-		printf("uwa1.cwa1 = %.80s\n", uwa1.cwa1);
-	}
-
-}  // end of call_func_dn () 
-
-//---------------------------------------------------------------------------
-//---------------------------------------------------------------------------
-
+		}  // end of while(exit_sw = 'N') loop
 */
+        return 0;
+
+}  // end of main
