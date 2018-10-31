@@ -1,3 +1,13 @@
+#Install Geosupport on Linux
+
+#Setting Up Envrionment Variables
+
+
+#Building from Source
+
+
+
+
 Brief Run Through for Creating Your Own C Application That Calls Linux Geosupport 
 
 1)	Install Linux Geosupport 
