@@ -170,7 +170,7 @@ void display1AHeader(FILE *fp)
 	fprintf(fp, ",");
 	fprintf(fp, "lo_hse_nbr");
 	fprintf(fp, ",");
-	//fprintf(fp, "bbl %.9s", uwa2f1a.wa2_f1a.bbl);fprintf(fp, "\t");
+	//fprintf(fp, "bbl %.9s", uwa2f1a.wa2_f1a.bbl);fprintf(fp, ",");
 	fprintf(fp, "filler02");
 	fprintf(fp, ",");
 	fprintf(fp, "RPAD_scc");
@@ -210,19 +210,19 @@ void display1AHeader(FILE *fp)
 	fprintf(fp, "condo_id");
 	fprintf(fp, ",");
 	fprintf(fp, "condo_unit_id");
-	fprintf(fp, ","); //fprintf(fp, "condo_bill_bbl %.9s", uwa2f1a.wa2_f1a.condo_bill_bbl);fprintf(fp, "\t");
+	fprintf(fp, ","); //fprintf(fp, "condo_bill_bbl %.9s", uwa2f1a.wa2_f1a.condo_bill_bbl);fprintf(fp, ",");
 	fprintf(fp, "filler06");
 	fprintf(fp, ",");
 	fprintf(fp, "condo_scc");
-	fprintf(fp, ","); //fprintf(fp, "condo_lo_bbl %.9s", uwa2f1a.wa2_f1a.condo_lo_bbl);fprintf(fp, "\t");
+	fprintf(fp, ","); //fprintf(fp, "condo_lo_bbl %.9s", uwa2f1a.wa2_f1a.condo_lo_bbl);fprintf(fp, ",");
 	fprintf(fp, "filler07");
-	fprintf(fp, ","); //fprintf(fp, "condo_hi_bbl %.9s", uwa2f1a.wa2_f1a.condo_hi_bbl);fprintf(fp, "\t");
+	fprintf(fp, ","); //fprintf(fp, "condo_hi_bbl %.9s", uwa2f1a.wa2_f1a.condo_hi_bbl);fprintf(fp, ",");
 	fprintf(fp, "filler08");
 	fprintf(fp, ",");
 	fprintf(fp, "filler09");
 	fprintf(fp, ",");
 	fprintf(fp, "co_op_nbr");
-	fprintf(fp, ","); //fprintf(fp, "San %.9s", uwa2f1a.wa2_f1a.San);fprintf(fp, "\t");
+	fprintf(fp, ","); //fprintf(fp, "San %.9s", uwa2f1a.wa2_f1a.San);fprintf(fp, ",");
 	fprintf(fp, "business_area");
 	fprintf(fp, ",");
 	fprintf(fp, "tax_map_nbr");
@@ -234,7 +234,7 @@ void display1AHeader(FILE *fp)
 	fprintf(fp, "latitude");
 	fprintf(fp, ",");
 	fprintf(fp, "longitude");
-	fprintf(fp, ","); //fprintf(fp, "coord[2][7] %.9s", uwa2f1a.wa2_f1a.coord[2][7]);fprintf(fp, "\t");
+	fprintf(fp, ","); //fprintf(fp, "coord[2][7] %.9s", uwa2f1a.wa2_f1a.coord[2][7]);fprintf(fp, ",");
 	fprintf(fp, "bid_id");
 	fprintf(fp, ",");
 	fprintf(fp, "TPAD_bin_status");
@@ -256,99 +256,99 @@ void display1AHeader(FILE *fp)
 void display1AtoFile(FILE *fp, C_WA2_F1A uwa2_f1a)
 {
 
-	fprintf(fp, "filler01 %.21s", uwa2f1a.wa2_f1a.filler01);
-	fprintf(fp, "\t");
+	fprintf(fp, "%.21s", uwa2f1a.wa2_f1a.filler01);
+	fprintf(fp, ",");
 
-	fprintf(fp, "cont_parity_ind %c", uwa2f1a.wa2_f1a.cont_parity_ind);
-	fprintf(fp, "\t");
-	fprintf(fp, "lo_hse_nbr  %.11s", uwa2f1a.wa2_f1a.lo_hse_nbr);
-	fprintf(fp, "\t");
+	fprintf(fp, "%c", uwa2f1a.wa2_f1a.cont_parity_ind);
+	fprintf(fp, ",");
+	fprintf(fp, "%.11s", uwa2f1a.wa2_f1a.lo_hse_nbr);
+	fprintf(fp, ",");
 
-	//fprintf(fp, "bbl %.9s", uwa2f1a.wa2_f1a.bbl);fprintf(fp, "\t");
-	fprintf(fp, "filler02 %c", uwa2f1a.wa2_f1a.filler02);
-	fprintf(fp, "\t");
-	fprintf(fp, "RPAD_scc %c", uwa2f1a.wa2_f1a.RPAD_scc);
-	fprintf(fp, "\t");
-	fprintf(fp, "filler03 %c", uwa2f1a.wa2_f1a.filler03);
-	fprintf(fp, "\t");
-	fprintf(fp, "RPAD_lucc[2] %.2s", uwa2f1a.wa2_f1a.RPAD_lucc);
-	fprintf(fp, "\t");
-	fprintf(fp, "corner[2] %.2s", uwa2f1a.wa2_f1a.corner);
-	fprintf(fp, "\t");
-	fprintf(fp, "nbr_blds[4] %.4s", uwa2f1a.wa2_f1a.nbr_blds);
-	fprintf(fp, "\t");
-	fprintf(fp, "nbr_str[2] %.2s", uwa2f1a.wa2_f1a.nbr_str);
-	fprintf(fp, "\t");
-	fprintf(fp, "inter_flag %c", uwa2f1a.wa2_f1a.inter_flag);
-	fprintf(fp, "\t");
-	fprintf(fp, "vacant_flag %c", uwa2f1a.wa2_f1a.vacant_flag);
-	fprintf(fp, "\t");
-	fprintf(fp, "irreg_flag %c", uwa2f1a.wa2_f1a.irreg_flag);
-	fprintf(fp, "\t");
-	fprintf(fp, "mh_ri_flag %c", uwa2f1a.wa2_f1a.mh_ri_flag);
-	fprintf(fp, "\t");
-	fprintf(fp, "adr_range_overflow %c", uwa2f1a.wa2_f1a.adr_range_overflow);
-	fprintf(fp, "\t");
-	fprintf(fp, "stroll_key[18] %.18s", uwa2f1a.wa2_f1a.stroll_key);
-	fprintf(fp, "\t");
-	fprintf(fp, "filler04 %c", uwa2f1a.wa2_f1a.filler04);
-	fprintf(fp, "\t");
-	fprintf(fp, "res_internal_use %c", uwa2f1a.wa2_f1a.res_internal_use);
-	fprintf(fp, "\t");
-	fprintf(fp, "bld_id[7] %.7s", uwa2f1a.wa2_f1a.bld_id);
-	fprintf(fp, "\t");
-	fprintf(fp, "condo_flag %c", uwa2f1a.wa2_f1a.condo_flag);
-	fprintf(fp, "\t");
-	fprintf(fp, "filler05 %c", uwa2f1a.wa2_f1a.filler05);
-	fprintf(fp, "\t");
-	fprintf(fp, "condo_id[4] %.4s", uwa2f1a.wa2_f1a.condo_id);
-	fprintf(fp, "\t");
-	fprintf(fp, "condo_unit_id[7] %.7s", uwa2f1a.wa2_f1a.condo_unit_id);
-	fprintf(fp, "\t");
-	//fprintf(fp, "condo_bill_bbl %.9s", uwa2f1a.wa2_f1a.condo_bill_bbl);fprintf(fp, "\t");
-	fprintf(fp, "filler06 %c", uwa2f1a.wa2_f1a.filler06);
-	fprintf(fp, "\t");
-	fprintf(fp, "condo_scc %c", uwa2f1a.wa2_f1a.condo_scc);
-	fprintf(fp, "\t");
-	//fprintf(fp, "condo_lo_bbl %.9s", uwa2f1a.wa2_f1a.condo_lo_bbl);fprintf(fp, "\t");
-	fprintf(fp, "filler07 %c", uwa2f1a.wa2_f1a.filler07);
-	fprintf(fp, "\t");
-	//fprintf(fp, "condo_hi_bbl %.9s", uwa2f1a.wa2_f1a.condo_hi_bbl);fprintf(fp, "\t");
-	fprintf(fp, "filler08 %c", uwa2f1a.wa2_f1a.filler08);
-	fprintf(fp, "\t");
-	fprintf(fp, "filler09[15] %.15s", uwa2f1a.wa2_f1a.filler09);
-	fprintf(fp, "\t");
-	fprintf(fp, "co_op_nbr[4] %.4s", uwa2f1a.wa2_f1a.co_op_nbr);
-	fprintf(fp, "\t");
-	//fprintf(fp, "San %.9s", uwa2f1a.wa2_f1a.San);fprintf(fp, "\t");
-	fprintf(fp, "business_area[5] %.5s", uwa2f1a.wa2_f1a.business_area);
-	fprintf(fp, "\t");
-	fprintf(fp, "tax_map_nbr[5] %.5s", uwa2f1a.wa2_f1a.tax_map_nbr);
-	fprintf(fp, "\t");
-	fprintf(fp, "filler10[4] %.4s", uwa2f1a.wa2_f1a.filler10);
-	fprintf(fp, "\t");
-	fprintf(fp, "filler11[3] %.3s", uwa2f1a.wa2_f1a.filler11);
-	fprintf(fp, "\t");
-	fprintf(fp, "latitude[9] %.9s", uwa2f1a.wa2_f1a.latitude);
-	fprintf(fp, "\t");
-	fprintf(fp, "longitude[11] %.11s", uwa2f1a.wa2_f1a.longitude);
-	fprintf(fp, "\t");
-	//fprintf(fp, "coord[2][7] %.9s", uwa2f1a.wa2_f1a.coord[2][7]);fprintf(fp, "\t");
-	fprintf(fp, "bid_id[6] %.6s", uwa2f1a.wa2_f1a.bid_id);
-	fprintf(fp, "\t");
-	fprintf(fp, "TPAD_bin_status %c", uwa2f1a.wa2_f1a.TPAD_bin_status);
-	fprintf(fp, "\t");
-	fprintf(fp, "TPAD_new_bin[7] %.7s", uwa2f1a.wa2_f1a.TPAD_new_bin);
-	fprintf(fp, "\t");
-	fprintf(fp, "TPAD_new_bin_status %c", uwa2f1a.wa2_f1a.TPAD_new_bin_status);
-	fprintf(fp, "\t");
-	fprintf(fp, "TPAD_conflict_flag %c", uwa2f1a.wa2_f1a.TPAD_conflict_flag);
-	fprintf(fp, "\t");
-	fprintf(fp, "filler12[9] %.9s", uwa2f1a.wa2_f1a.filler12);
-	fprintf(fp, "\t");
-	fprintf(fp, "int_use[8] %.8s", uwa2f1a.wa2_f1a.int_use);
-	fprintf(fp, "\t");
-	fprintf(fp, "nbr_addr[4] %.4s", uwa2f1a.wa2_f1a.nbr_addr);
+	//fprintf(fp, "bbl %.9s", uwa2f1a.wa2_f1a.bbl);fprintf(fp, ",");
+	fprintf(fp, "%c", uwa2f1a.wa2_f1a.filler02);
+	fprintf(fp, ",");
+	fprintf(fp, "%c", uwa2f1a.wa2_f1a.RPAD_scc);
+	fprintf(fp, ",");
+	fprintf(fp, "%c", uwa2f1a.wa2_f1a.filler03);
+	fprintf(fp, ",");
+	fprintf(fp, "%.2s", uwa2f1a.wa2_f1a.RPAD_lucc);
+	fprintf(fp, ",");
+	fprintf(fp, "%.2s", uwa2f1a.wa2_f1a.corner);
+	fprintf(fp, ",");
+	fprintf(fp, "%.4s", uwa2f1a.wa2_f1a.nbr_blds);
+	fprintf(fp, ",");
+	fprintf(fp, "%.2s", uwa2f1a.wa2_f1a.nbr_str);
+	fprintf(fp, ",");
+	fprintf(fp, "%c", uwa2f1a.wa2_f1a.inter_flag);
+	fprintf(fp, ",");
+	fprintf(fp, "%c", uwa2f1a.wa2_f1a.vacant_flag);
+	fprintf(fp, ",");
+	fprintf(fp, "%c", uwa2f1a.wa2_f1a.irreg_flag);
+	fprintf(fp, ",");
+	fprintf(fp, "%c", uwa2f1a.wa2_f1a.mh_ri_flag);
+	fprintf(fp, ",");
+	fprintf(fp, "%c", uwa2f1a.wa2_f1a.adr_range_overflow);
+	fprintf(fp, ",");
+	fprintf(fp, "%.18s", uwa2f1a.wa2_f1a.stroll_key);
+	fprintf(fp, ",");
+	fprintf(fp, "%c", uwa2f1a.wa2_f1a.filler04);
+	fprintf(fp, ",");
+	fprintf(fp, "%c", uwa2f1a.wa2_f1a.res_internal_use);
+	fprintf(fp, ",");
+	fprintf(fp, "%.7s", uwa2f1a.wa2_f1a.bld_id);
+	fprintf(fp, ",");
+	fprintf(fp, "%c", uwa2f1a.wa2_f1a.condo_flag);
+	fprintf(fp, ",");
+	fprintf(fp, "%c", uwa2f1a.wa2_f1a.filler05);
+	fprintf(fp, ",");
+	fprintf(fp, "%.4s", uwa2f1a.wa2_f1a.condo_id);
+	fprintf(fp, ",");
+	fprintf(fp, "%.7s", uwa2f1a.wa2_f1a.condo_unit_id);
+	fprintf(fp, ",");
+	//fprintf(fp, "condo_bill_bbl %.9s", uwa2f1a.wa2_f1a.condo_bill_bbl);fprintf(fp, ",");
+	fprintf(fp, "%c", uwa2f1a.wa2_f1a.filler06);
+	fprintf(fp, ",");
+	fprintf(fp, "%c", uwa2f1a.wa2_f1a.condo_scc);
+	fprintf(fp, ",");
+	//fprintf(fp, "condo_lo_bbl %.9s", uwa2f1a.wa2_f1a.condo_lo_bbl);fprintf(fp, ",");
+	fprintf(fp, "%c", uwa2f1a.wa2_f1a.filler07);
+	fprintf(fp, ",");
+	//fprintf(fp, "condo_hi_bbl %.9s", uwa2f1a.wa2_f1a.condo_hi_bbl);fprintf(fp, ",");
+	fprintf(fp, "%c", uwa2f1a.wa2_f1a.filler08);
+	fprintf(fp, ",");
+	fprintf(fp, "%.15s", uwa2f1a.wa2_f1a.filler09);
+	fprintf(fp, ",");
+	fprintf(fp, "%.4s", uwa2f1a.wa2_f1a.co_op_nbr);
+	fprintf(fp, ",");
+	//fprintf(fp, "San %.9s", uwa2f1a.wa2_f1a.San);fprintf(fp, ",");
+	fprintf(fp, "%.5s", uwa2f1a.wa2_f1a.business_area);
+	fprintf(fp, ",");
+	fprintf(fp, "%.5s", uwa2f1a.wa2_f1a.tax_map_nbr);
+	fprintf(fp, ",");
+	fprintf(fp, "%.4s", uwa2f1a.wa2_f1a.filler10);
+	fprintf(fp, ",");
+	fprintf(fp, "%.3s", uwa2f1a.wa2_f1a.filler11);
+	fprintf(fp, ",");
+	fprintf(fp, "%.9s", uwa2f1a.wa2_f1a.latitude);
+	fprintf(fp, ",");
+	fprintf(fp, "%.11s", uwa2f1a.wa2_f1a.longitude);
+	fprintf(fp, ",");
+	//fprintf(fp, "coord[2][7] %.9s", uwa2f1a.wa2_f1a.coord[2][7]);fprintf(fp, ",");
+	fprintf(fp, "%.6s", uwa2f1a.wa2_f1a.bid_id);
+	fprintf(fp, ",");
+	fprintf(fp, "%c", uwa2f1a.wa2_f1a.TPAD_bin_status);
+	fprintf(fp, ",");
+	fprintf(fp, "%.7s", uwa2f1a.wa2_f1a.TPAD_new_bin);
+	fprintf(fp, ",");
+	fprintf(fp, "%c", uwa2f1a.wa2_f1a.TPAD_new_bin_status);
+	fprintf(fp, ",");
+	fprintf(fp, "%c", uwa2f1a.wa2_f1a.TPAD_conflict_flag);
+	fprintf(fp, ",");
+	fprintf(fp, "%.9s", uwa2f1a.wa2_f1a.filler12);
+	fprintf(fp, ",");
+	fprintf(fp, "%.8s", uwa2f1a.wa2_f1a.int_use);
+	fprintf(fp, ",");
+	fprintf(fp, "%.4s", uwa2f1a.wa2_f1a.nbr_addr);
 	fprintf(fp, "\n");
 }
 void display1A(C_WA2_F1A uwa2_f1a)
@@ -741,8 +741,9 @@ void trim(char *input)
 
 int main(int argc, char *argv[])
 {
+	clock_t begin = clock();
 
-	FILE *inputStream = fopen("input.txt", "r");
+	FILE *inputStream = fopen("input_ap.csv", "r");
 
 	FILE *outStream;
 	outStream = fopen("output.txt", "w+");
@@ -752,6 +753,7 @@ int main(int argc, char *argv[])
 	char sname_arr[10];
 	char bcode_arr[10];
 
+	display1AHeader(outStream);
 	while (fgets(line, 1024, inputStream))
 	{
 
@@ -780,7 +782,9 @@ int main(int argc, char *argv[])
 			free(sname);
 			free(bcode);*/
 	}
-
+	clock_t end = clock();
+	double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+	printf("Executed in %f seconds \n", time_spent);
 	fclose(inputStream);
 	fclose(outStream);
 
